@@ -10,7 +10,7 @@ app.set('port', process.env.PORT || 3000); // main port
 // prepare our API endpoint routing
 var oauth = require('./oauthtoken');
 var oss = require('./oss');
-var modelderivative = require('./modelderivative');
+var modelderivative = require('./ModelDerivative');
 app.use('/', oauth); // redirect oauth API calls
 app.use('/', oss); // redirect OSS API calls
 app.use('/', modelderivative); // redirect model derivative API calls
