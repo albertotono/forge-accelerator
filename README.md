@@ -1,3 +1,3 @@
 # forge-accelerator
 
-# websocket 
+AEC Hackathon and Forge Accelerator
