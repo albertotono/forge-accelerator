@@ -65,7 +65,7 @@ router.post('/api/forge/oss/buckets', jsonParser, function (req, res) {
         var bucketsApi = new forgeSDK.BucketsApi();
         var postBuckets = new forgeSDK.PostBucketsPayload();
         postBuckets.bucketKey = req.body.bucketKey;
-        postBuckets.policyKey = "transient"; // expires in 24h
+        postBuckets.policyKey = "persistent"; // never expires set to transient if it should last 24h
 
         bucketsApi.createBucket(postBuckets, {}, oauth.OAuthClient(), credentials).then(function (buckets) {
             res.status(200).end();
