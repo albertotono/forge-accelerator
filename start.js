@@ -9,4 +9,19 @@ var server = app.listen(app.get('port'), function () {
 
   console.log('Starting at ' + (new Date()).toString());
   console.log('Server listening on port ' + server.address().port);
+
+  var io = require('socket.io').listen(server);
+  io.on('connection', function (socket) {
+    console.log('a user connected');
+    socket.on('disconnect', function () {
+      console.log('user disconnected');
+    });
+    socket.on('join', function (room) {
+      console.log('join: ' + room);
+      socket.join(room.viewableId);
+    });
+    socket.on('statechanged', function (data) {
+      socket.to(data.viewableId).emit('newstate', data.state);
+    });
+  });
 });
