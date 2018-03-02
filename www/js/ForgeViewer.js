@@ -31,9 +31,30 @@ function onDocumentLoadFailure(viewerErrorCode) {
   console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
 }
 
+var socket = io.connect(location.host);
+var isReacting = false;
+
 function onItemLoadSuccess(viewer, item) {
   // item loaded, any custom action?
+
+  socket.emit('join', {
+    viewableId: item.viewableID
+  });
+
+  viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, function (e) {
+    if (isReacting) return;
+    socket.emit('statechanged', {
+      viewableId: item.viewableID,
+      state: viewer.getState()
+    });
+  });
 }
+
+socket.on('newstate', function (data) {
+  isReacting = true;
+  viewerApp.myCurrentViewer.restoreState(data);
+  isReacting = false;
+});
 
 function onItemLoadFail(errorCode) {
   console.error('onItemLoadFail() - errorCode:' + errorCode);
